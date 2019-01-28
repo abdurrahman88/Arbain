@@ -15,19 +15,22 @@ import SplashScreen from 'react-native-splash-screen'
 
 import HomeScreen from './src/screens/HomeScreen';
 import AboutScreen from './src/screens/AboutScreen';
+import TentangHadits from './src/screens/TentangHadits';
 import LatihanScreen from './src/screens/LatihanScreen';
 import DaftarIsiScreen from './src/screens/DaftarIsiScreen';
-import DetailHadistScreen from './src/screens/DetailHadistScreen';
+import isiHadits from './src/screens/isiHadits';
 
 const RootStack = createStackNavigator(
   {
     Home: HomeScreen,
     Daftar: DaftarIsiScreen,
-    Detail: DetailHadistScreen,
+    Isi: isiHadits,
+    Tentang: TentangHadits,
+    About: AboutScreen,
     Latihan: LatihanScreen,
   },
   {
-    initialRouteName: "Daftar",
+    initialRouteName: "Home",
   }
 );
 const AppContainer = createAppContainer(RootStack);

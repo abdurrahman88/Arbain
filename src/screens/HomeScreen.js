@@ -22,16 +22,16 @@ export default class HomeScreen extends Component {
         </View>
 
         <View style={styles.button}>
-            <TouchableOpacity
-              style={styles.boxButton}
-              onPress={() =>
-              this.props.navigation.navigate('Daftar')}
+            <TouchableOpacity 
+              style={styles.boxButton} 
+              onPress={() => this.props.navigation.navigate('Daftar')}
             >
               <Text style={styles.text}>Daftar Isi</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.boxButton}
+              onPress={() => this.props.navigation.navigate('Tentang')}
             >
               <Text style={styles.text}>About</Text>
             </TouchableOpacity>
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   boxButton: {
-    backgroundColor: '#3a78a5',
+    backgroundColor: '#5393c1',
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 15,

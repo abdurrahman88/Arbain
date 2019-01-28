@@ -17,6 +17,7 @@ export default class DaftarIsiScreen extends Component {
   };
 
 
+
   _menu = null;
 
   setMenuRef = ref => {
@@ -30,6 +31,16 @@ export default class DaftarIsiScreen extends Component {
   showMenu = () => {
     this._menu.show();
   };
+
+  _about(){
+    this.props.navigation.navigate('Tentang');
+    this.hideMenu();
+  }
+
+  _bookMark(){
+    this.props.navigation.navigate('Bookmark');
+    this.hideMenu();
+  }
   render() {
     return (    	
       <View style={styles.container}>
@@ -47,32 +58,18 @@ export default class DaftarIsiScreen extends Component {
           </Body>
 
           <Right>
-          	<Button transparent
-              onPress= {() => alert([<Button success><Title>ammar</Title></Button>])}
-            >
-              <Icon name='search' />
-            </Button>
-
             <Menu 
               style={{justifyContent: 'center', alignItems: 'center'}}
               ref={this.setMenuRef}
               button={
                 <Icon style={styles.more} onPress={this.showMenu} name = 'more' />
-              }
-
-            >
-              <MenuItem 
-                onPress={() => this.props.navigation.navigate('About')}
-              >
+            }>
+              <MenuItem onPress= {() => this._about()}>
                 About
               </MenuItem>
-              <MenuItem 
-                onPress={() => this.props.navigation.navigate('Bookmark')}
-              >
+              <MenuItem onPress={() => this._bookMark()}>
                 Bookmark
-              </MenuItem>
-              <MenuItem onPress={this.hideMenu}>cancel</MenuItem>
-        
+              </MenuItem>        
             </Menu>
             
           </Right>
@@ -81,21 +78,22 @@ export default class DaftarIsiScreen extends Component {
           <Text style={styles.textDaftar}>Dafta Isi</Text>
         </View>
         <ScrollView>
-          <View style={{marginTop: 20,}}>
+          <View style={{marginTop: 20}}>
             {daftarHadist.map((data) => (
               <TouchableOpacity 
                 style={styles.boxDaftar}
                 key={data.id}
-                onPress = {() => this.props.navigation.navigate('Detail', {
+                onPress = {() => this.props.navigation.navigate('Isi', {
                   idItem: data.id,
                 })}
-                
                 >
               
                 <View style={styles.bundarId}>
                   <Text style={styles.nomor}>{data.id}</Text>
                 </View>
-                <Text style={styles.judul}>{data.judul}</Text>
+                <View>
+                  <Text style={styles.judul}>{data.judul.substring(0, 30)}...</Text>
+                </View>
                 <Right>
                   <Icon style={{color: '#5393c1'}} name = 'more' />
                 </Right>
@@ -118,11 +116,11 @@ const styles = StyleSheet.create({
   more: {
     color: 'white',
     paddingBottom: 8,
-    paddingRight: 8,
-    paddingLeft: 15,
+    paddingRight: 10,
+    paddingLeft: 10,
   },
   boxDaftar: {
-    backgroundColor: '#82cdf2',
+    backgroundColor: '#eff0f2',
     marginLeft: 3,
     elevation: 3,
     marginRight: 3,
@@ -131,7 +129,7 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 15,
     borderRadius: 5,
-    marginBottom: 8,
+    marginBottom: 12,
     flexDirection: 'row', 
   },
   content: {
@@ -173,9 +171,9 @@ const styles = StyleSheet.create({
   },
   judul: {
     fontSize: 15,
-    paddingLeft: 5,
-    paddingTop: 6,
-    color: '#f7f9f9',
+    paddingLeft: 13,
+    paddingTop: 4,
+    color: '#656768',
     fontWeight: 'bold',
   },
   card: {

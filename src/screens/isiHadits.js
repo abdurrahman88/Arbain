@@ -7,16 +7,51 @@ import {
 	ListItem, Badge, Card, Segment,
 	CardItem, Content, Footer, FooterTab } from 'native-base';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
-import detailHadist from '../../data/detailHadist.json';
+import isiDetailHadits from '../../data/isiDetailHadits.json';
 
-export default class DetailHadistScreen extends Component {
+export default class isiHadits extends Component {
 	static navigationOptions = {
     header: null
 	};
 
 
-  idItem = this.props.navigation.getParam("idItem");
-  data = detailHadist[this.idItem];
+  _copyArab(){
+    Clipboard.setString(this.state.arab);
+    alert('success');
+    this.hideMenu();
+  }
+
+  _copyTerjemah(){
+    Clipboard.setString(this.state.terjemah);
+    alert('success');
+    this.hideMenu();
+  }
+
+  _copySemua(){
+    Clipboard.setString(this.state.semua);
+    alert('success');
+    this.hideMenu();
+  }
+
+  _about(){
+    this.props.navigation.navigate('Tentang');
+    this.hideMenu();
+  }
+  
+  constructor(props) {
+    super(props);
+
+    const idItem = this.props.navigation.getParam("idItem");
+    const index = parseInt(idItem) - 1;
+    this.data = isiDetailHadits[index];
+
+    this.state = {
+      arab: this.data.judul + '\n \n' + this.data.arab + '\n \n' + this.data.sumber,
+      terjemah: this.data.judul + '\n \n' + this.data.terjemahan + '\n \n' + this.data.sumberIndo,
+      semua: this.data.judul + '\n \n' + this.data.arab + '\n \n' + this.data.sumber + '\n \n' + this.data.terjemahan + '\n \n' + this.data.sumberIndo,
+    };
+  }
+
 
   // BAR MENU //
   _menu = null;
@@ -24,7 +59,7 @@ export default class DetailHadistScreen extends Component {
   setMenuRef = ref => {
     this._menu = ref;
   };
-
+    
   hideMenu = () => {
     this._menu.hide();
   };
@@ -33,35 +68,8 @@ export default class DetailHadistScreen extends Component {
     this._menu.show();
   };
 
-  
-  state = {
-    arab: this.data.judul + '\n \n' + this.data.arab + '\n \n' + this.data.sumber,
-    terjemah: this.data.judul + '\n \n' + this.data.terjemahan + '\n \n' + this.data.sumberIndo,
-    semua: this.data.judul + '\n \n' + this.data.arab + '\n \n' + this.data.sumber + '\n \n' + this.data.terjemahan + '\n \n' + this.data.sumberIndo,
-  }
-
-  _copyArab(){
-    Clipboard.setString(this.state.arab);
-  }
-
-  _copyTerjemah(){
-    Clipboard.setString(this.state.terjemah);
-    this.hideMenu;
-  }
-
-  _copySemua(){
-    Clipboard.setString(this.state.semua);
-    alert('success copied!!');
-  }
-
-  
 	render() {
-		
-		const id = this.idItem;
-		const index = parseInt(id) - 1;
 
-
-    
     return (
       <View style={styles.container}>
       	<Header style={styles.header}>
@@ -78,50 +86,23 @@ export default class DetailHadistScreen extends Component {
           </Body>
 
           <Right>
-          	<Button transparent
-              onPress= {() => alert()}
-            >
-              <Icon name='search' />
-            </Button>
-
-            <Button transparent
-              onPress= {() => alert()}
-            >
-              <Icon name='bookmark' />
-            </Button>
-
             <Menu 
               style={{justifyContent: 'center', alignItems: 'center'}}
               ref={this.setMenuRef}
               button={
                 <Icon style={styles.more} onPress={this.showMenu} name = 'more' />
               }
-
             >
-            <MenuItem 
-              onPress={() => this._copyArab()}
-              onPress={this.hideMenu}
-
-            >
+            <MenuItem onPress={() => (this._copyArab())}>
               Salin Arab
             </MenuItem>
-            <MenuItem 
-              onPress={() => this._copyTerjemah()}
-              onPress={this.hideMenu}
-              
-            >
+            <MenuItem onPress={() => this._copyTerjemah()}>
               Salin Terjemah
             </MenuItem>
-            <MenuItem 
-              onPress={() => this._copySemua()}
-              onPress={this.hideMenu}
-              
-            >
+            <MenuItem onPress={() => this._copySemua()}>
               Salin Semua
             </MenuItem>
-            <MenuItem 
-              onPress={() => this.props.navigation.navigate('About')}
-            >
+            <MenuItem onPress={() => this._about()}>
               About
             </MenuItem>
             <MenuItem onPress={this.hideMenu}>cancel</MenuItem>
@@ -132,20 +113,20 @@ export default class DetailHadistScreen extends Component {
       	</Header>
 
         <View style={styles.headerDaftar}>
-          <Text style={styles.noIndo}>Hadist ke-{detailHadist[index].id}</Text>
-          <Text style={styles.noArab}>{detailHadist[index].noArab}</Text>
+          <Text style={styles.noIndo}>Hadist ke-{this.data.id}</Text>
+          <Text style={styles.noArab}>{this.data.noArab}</Text>
         </View>
 
       	<Content>            
           <Card>
             <CardItem bordered style={{justifyContent: 'center', alignItems: 'center',}} >
-              <Text style={styles.judul}>{detailHadist[index].judul}</Text>
+              <Text style={styles.judul}>{this.data.judul}</Text>
             </CardItem>
             
             <CardItem>
               <Body style={styles.bodyCard}>
-                <Text style={styles.textArab}>{detailHadist[index].arab}</Text>
-                <Text style={styles.textSumber}> {detailHadist[index].sumber} </Text>
+                <Text style={styles.textArab}>{this.data.arab}</Text>
+                <Text style={styles.textSumber}> {this.data.sumber} </Text>
               </Body>
             </CardItem>
 
@@ -154,8 +135,8 @@ export default class DetailHadistScreen extends Component {
             <CardItem style={styles.CarICarItemtem}>
               <Body>
                 <Text style={styles.textTerjemah}>Terjemah :</Text>
-                <Text style={styles.isiTeremahan}>" {detailHadist[index].terjemahan}. "</Text>
-                <Text style={styles.sumberTeremah}>( {detailHadist[index].sumberIndo} )</Text>
+                <Text style={styles.isiTeremahan}>" {this.data.terjemahan}. "</Text>
+                <Text style={styles.sumberTeremah}>( {this.data.sumberIndo} )</Text>
               </Body>
             </CardItem>
           </Card>
@@ -226,14 +207,15 @@ const styles = StyleSheet.create({
   judul: {
     fontFamily: 'lato',
     fontWeight: 'bold',
-    fontSize: 22,
+    fontSize: 20,
     textAlign: 'center',
   },
   textArab: {
     paddingTop: 20,
     fontSize: 27,
-    lineHeight: 43,
+    lineHeight: 40,
     fontFamily: 'lotus-linotype-light',
+    fontWeight: 'normal',
   },
   textTerjemah: {
     paddingBottom: 10,
@@ -245,7 +227,7 @@ const styles = StyleSheet.create({
   textSumber: {
     paddingTop: 20,
     fontSize: 27,
-    lineHeight: 40,
+    lineHeight: 37,
     fontFamily: 'lotus-linotype-light',
 
   },

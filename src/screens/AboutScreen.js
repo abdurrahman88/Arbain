@@ -31,7 +31,7 @@ export default class AboutScreen extends Component {
             </Button>
           </Right>
         </Header>
-        <View style={{justifyContent: 'center', alignItems: 'center', marginTop: '40',}}>
+        <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 40,}}>
           <Image
             style={{width: 150, height: 150,}}
             source={require('../../img/aplikasi.png')}
