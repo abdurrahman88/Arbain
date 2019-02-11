@@ -5,7 +5,7 @@ import {
 	Body, Right, Button, 
 	Icon, Title, List, 
 	ListItem, Badge, Card, Segment,
-	CardItem, Content, Footer, FooterTab } from 'native-base';
+	CardItem, Content, Footer, FooterTab, Accordion } from 'native-base';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import isiDetailHadits from '../../data/isiDetailHadits.json';
 
@@ -50,6 +50,10 @@ export default class isiHadits extends Component {
       terjemah: this.data.judul + '\n \n' + this.data.terjemahan + '\n \n' + this.data.sumberIndo,
       semua: this.data.judul + '\n \n' + this.data.arab + '\n \n' + this.data.sumber + '\n \n' + this.data.terjemahan + '\n \n' + this.data.sumberIndo,
     };
+
+    this.dataArray = [
+      { title: "Terjemah", content: this.data.terjemahan + '\n \n' + this.data.sumberIndo },
+    ];
   }
 
 
@@ -68,11 +72,48 @@ export default class isiHadits extends Component {
     this._menu.show();
   };
 
+  _scrollTo() {
+    this.scroller.scrollTo({x: 0, y: 50});
+  }
+
+  _renderHeader(item, expanded) {
+
+    return (
+      <View style={styles.headerTerjemah}>
+        <Text header style={{ fontWeight: "600", color: '#ffffff', }}>
+          {item.title}
+        </Text>
+        {expanded
+          ? <Icon style={styles.iconAcc} name="remove-circle" />
+          : <Icon style={styles.iconAcc} name="add" />}
+      </View>
+    );
+  }
+
+  _renderContent(item) {
+    return (
+      <View style={styles.headerRiwayat}   
+      >
+        <Text
+          style={{
+            padding: 10,
+            fontStyle: "italic",
+          }}
+        >
+          {item.content}
+        </Text>
+      </View>
+    );
+  }
+
 	render() {
 
     return (
       <View style={styles.container}>
-      	<Header style={styles.header}>
+      	<Header 
+          style={styles.header}
+          androidStatusBarColor='#00695C'
+        >
       		<Left>
             <Button transparent
               onPress= {() => this.props.navigation.goBack()}
@@ -81,9 +122,7 @@ export default class isiHadits extends Component {
             </Button>
           </Left>
 
-          <Body style={styles.headerBody}>
-            <Title style={styles.textBody}>Hadist Arba'in</Title>
-          </Body>
+          <Title style={styles.textBody}>Hadist Arba'in</Title>
 
           <Right>
             <Menu 
@@ -117,13 +156,13 @@ export default class isiHadits extends Component {
           <Text style={styles.noArab}>{this.data.noArab}</Text>
         </View>
 
-      	<Content>            
+      	<Content ref={(scroller) => {this.scroller = scroller}}>            
           <Card>
             <CardItem bordered style={{justifyContent: 'center', alignItems: 'center',}} >
               <Text style={styles.judul}>{this.data.judul}</Text>
             </CardItem>
             
-            <CardItem>
+            <CardItem style={{backgroundColor: '#ffffff',}}>
               <Body style={styles.bodyCard}>
                 <Text style={styles.textArab}>{this.data.arab}</Text>
                 <Text style={styles.textSumber}> {this.data.sumber} </Text>
@@ -131,27 +170,14 @@ export default class isiHadits extends Component {
             </CardItem>
 
           </Card>
-          <Card style={styles.bodyTerjemah}>
-            <CardItem style={styles.CarICarItemtem}>
-              <Body>
-                <Text style={styles.textTerjemah}>Terjemah :</Text>
-                <Text style={styles.isiTeremahan}>" {this.data.terjemahan}. "</Text>
-                <Text style={styles.sumberTeremah}>( {this.data.sumberIndo} )</Text>
-              </Body>
-            </CardItem>
-          </Card>
+          <Accordion
+            dataArray={this.dataArray}
+            renderHeader={this._renderHeader}
+            renderContent={this._renderContent}
+            headerStyle={{ backgroundColor: "#b7daf8" }}
+            contentStyle={{ backgroundColor: "#ddecf8" }}
+          />
       	</Content>
-        <Footer style={{backgroundColor: '#3a78a5'}}>
-          <FooterTab style={{backgroundColor: '#3a78a5'}}>
-              <Button 
-                onPress={() => this.props.navigation.navigate('Home')}
-                vertical
-              >
-                <Icon name="home" />
-                <Text style={{color: '#e8edef', fontWeight: 'bold', fontFamily: 'lato'}}>Home</Text>
-              </Button>
-          </FooterTab>
-        </Footer>
       </View>
     );
 	}
@@ -162,12 +188,42 @@ export default class isiHadits extends Component {
 const styles = StyleSheet.create({
   header: {  
     alignItems: 'center',
-    backgroundColor: '#3a78a5',    
+    backgroundColor: '#009688',    
     justifyContent: 'center',
+    elevation: 5,
   },
   container: {
   	backgroundColor: "#fff",
   	flex: 1,
+  },
+  bodyCard: {
+    backgroundColor: '#ffffff',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  iconAcc: {
+    color: 'white',
+    paddingRight: 10,
+    fontSize: 20,
+  },
+  headerTerjemah: {
+    flexDirection: "row",
+    padding: 10,
+    justifyContent: "space-between",
+    alignItems: "center" ,
+    backgroundColor: "#009688",
+    marginRight: 3,
+    marginLeft: 3,
+    elevation: 2,
+    marginBottom: 5,
+  },
+  headerRiwayat: {
+    padding: 10,
+    backgroundColor: "#e3f1f1",
+    marginRight: 3,
+    elevation: 3,
+    marginLeft: 3,
+    marginBottom: 10,
   },
   more: {
     color: 'white',
@@ -179,22 +235,24 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#5393c1',
-    paddingTop: 7,
-    paddingBottom: 7,
-    elevation: 5,
+    backgroundColor: '#009688',
+    paddingTop: 5,
+    paddingBottom: 5,
+    marginTop: 10,
+    marginRight: 3,
+    marginLeft: 3,
+    borderRadius: 5,
   }, 
   noArab: {
     color:'#fcfdff',
     fontSize: 18,
     fontFamily: 'lotus-linotype-light',
-
   },
   noIndo: {
-    paddingBottom: 3,
+    paddingBottom: 2,
     color:'#fcfdff',
-    fontWeight: 'bold',
     fontSize: 20,
+    fontFamily: 'SourceSansPro-Semibold',
   },
   
   bodyTerjemah: {
@@ -205,8 +263,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#d9e9f9',
   },
   judul: {
-    fontFamily: 'lato',
-    fontWeight: 'bold',
+    fontFamily: 'SourceSansPro-Semibold',
     fontSize: 20,
     textAlign: 'center',
   },
@@ -226,8 +283,9 @@ const styles = StyleSheet.create({
   },
   textSumber: {
     paddingTop: 20,
-    fontSize: 27,
-    lineHeight: 37,
+    fontSize: 24,
+    textAlign: 'center',
+    lineHeight: 34,
     fontFamily: 'lotus-linotype-light',
 
   },
@@ -240,6 +298,11 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     fontSize: 13,
     textAlign: 'center',
+  },
+  textBody: {
+    fontSize: 20,
+    fontFamily: 'SourceSansPro-Semibold',
+    paddingLeft: 60,
   }
 });
 
@@ -249,5 +312,14 @@ const styles = StyleSheet.create({
   <Text>{name}</Text>
 ))}
 
+<Card style={styles.bodyTerjemah}>
+  <CardItem style={styles.CarICarItemtem}>
+    <Body>
+      <Text style={styles.textTerjemah}>Terjemah :</Text>
+      <Text style={styles.isiTeremahan}>" {this.data.terjemahan}. "</Text>
+      <Text style={styles.sumberTeremah}>( {this.data.sumberIndo} )</Text>
+    </Body>
+  </CardItem>
+</Card>
 
 */

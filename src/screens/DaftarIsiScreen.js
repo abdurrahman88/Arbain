@@ -44,7 +44,10 @@ export default class DaftarIsiScreen extends Component {
   render() {
     return (    	
       <View style={styles.container}>
-      	<Header style={styles.header}>
+      	<Header 
+          style={styles.header}
+          androidStatusBarColor='#00695C'
+        >
       		<Left>
             <Button transparent
               onPress= {() => this.props.navigation.goBack()}
@@ -53,9 +56,7 @@ export default class DaftarIsiScreen extends Component {
             </Button>
           </Left>
 
-          <Body style={styles.headerBody}>
-            <Title style={styles.textBody}>Hadist Ar Ba'in</Title>
-          </Body>
+          <Title style={styles.textBody}>Hadist Ar Ba'in</Title>
 
           <Right>
             <Menu 
@@ -78,7 +79,7 @@ export default class DaftarIsiScreen extends Component {
           <Text style={styles.textDaftar}>Dafta Isi</Text>
         </View>
         <ScrollView>
-          <View style={{marginTop: 20}}>
+          <View style={{marginTop: 10}}>
             {daftarHadist.map((data) => (
               <TouchableOpacity 
                 style={styles.boxDaftar}
@@ -95,7 +96,7 @@ export default class DaftarIsiScreen extends Component {
                   <Text style={styles.judul}>{data.judul.substring(0, 30)}...</Text>
                 </View>
                 <Right>
-                  <Icon style={{color: '#5393c1'}} name = 'more' />
+                  <Icon style={{color: '#009688'}} type= 'MaterialIcons' name = 'keyboard-arrow-right' />
                 </Right>
               </TouchableOpacity>
             ))}
@@ -109,7 +110,7 @@ export default class DaftarIsiScreen extends Component {
 const styles = StyleSheet.create({
   header: {  
     alignItems: 'center',
-    backgroundColor: '#3a78a5',
+    backgroundColor: '#009688',
     justifyContent: 'center',
     elevation: 3,
   },
@@ -120,41 +121,44 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   boxDaftar: {
-    backgroundColor: '#eff0f2',
+    backgroundColor: '#fcfcfc',
     marginLeft: 3,
-    elevation: 3,
+    elevation: 2,
     marginRight: 3,
     paddingLeft: 6,
     paddingRight: 7,
     paddingTop: 15,
     paddingBottom: 15,
     borderRadius: 5,
-    marginBottom: 12,
+    marginBottom: 10,
     flexDirection: 'row', 
   },
   content: {
-    backgroundColor: '#deefef'
+    backgroundColor: '#EEEEEE',
   },
   headerDaftar: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#5393c1',
+    backgroundColor: '#009688',
     paddingTop: 10,
-    elevation: 5,
+    elevation: 2,
     paddingBottom: 10,
+    marginTop: 10,
+    marginLeft: 3,
+    marginRight: 3,
+    borderRadius: 5,
   }, 
   textDaftar: {
     fontSize: 20,
-    fontFamily: 'lato',
-    fontWeight: 'bold',
-    color: '#edeeef',
+    fontFamily: 'SourceSansPro-Semibold',
+    color: '#ffffff',
   },
   nomor: {
     color: '#f7f9f9'
 
   },
   bundarId: {
-    backgroundColor: '#5393c1',
+    backgroundColor: '#009688',
     width: 30,
     height: 30,
     borderRadius: 50,
@@ -162,7 +166,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-  	backgroundColor: "#fff",
+  	backgroundColor: "#EEEEEE",
   	flex: 1,
   },
   text: {
@@ -170,11 +174,11 @@ const styles = StyleSheet.create({
     color:'#dee1e5',
   },
   judul: {
+    fontFamily: 'SourceSansPro-SemiboldIt',
     fontSize: 15,
     paddingLeft: 13,
     paddingTop: 4,
-    color: '#656768',
-    fontWeight: 'bold',
+    color: '#9E9E9E',
   },
   card: {
     margin: 20,
@@ -182,6 +186,13 @@ const styles = StyleSheet.create({
   CardItem: {
     backgroundColor: '#dee3ea',
     elevation: 5,
+  },
+  textBody: {
+    fontSize: 20, 
+    textAlign: 'center',
+    color: '#ffffff',
+    paddingLeft: 70,
+    fontFamily: 'SourceSansPro-Semibold',
   }
 });
 
